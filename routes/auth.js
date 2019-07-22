@@ -1,14 +1,30 @@
 'use strict';
 
 const express = require('express');
+const bcrypt = require('bcrypt');
+const User = require('../models/User');
+
 const router = express.Router();
+
+const saltRounds = 10;
 
 router.get('/signup', (req, res, next) => {
   res.render('signup');
 });
 
-router.post('/signup', (req, res, next) => {
-
+router.post('/signup', async (req, res, next) => {
+  try {
+    const { username, password } = req.body;
+    const salt = bcrypt.genSaltSync(saltRounds);
+    const hashedPassword = bcrypt.hashSync(password, salt);
+    await User.create({
+      username,
+      password: hashedPassword
+    });
+    res.redirect('/');
+  } catch (error) {
+    next(error);
+  }
 });
 
 router.get('/login', (req, res, next) => {

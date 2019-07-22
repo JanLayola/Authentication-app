@@ -1,11 +1,13 @@
 'use strict';
 
-const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
+const hbs = require('hbs');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -31,7 +33,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('./auth', authRouter);
+app.use('/auth', authRouter);
 
 app.use((req, res, next) => {
   res.status(404);
