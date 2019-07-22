@@ -4,7 +4,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 
 const User = require('../models/User');
-const { isLoggedIn, isNotLoggedIn, isFormFiled } = require('../middlewares/authMiddlewares');
+const { isLoggedIn, isNotLoggedIn, isFormFilled } = require('../middlewares/authMiddlewares');
 
 const router = express.Router();
 const saltRounds = 10;
@@ -13,7 +13,7 @@ router.get('/signup', isLoggedIn, (req, res, next) => {
   res.render('signup');
 });
 
-router.post('/signup', isLoggedIn, isFormFiled, async (req, res, next) => {
+router.post('/signup', isLoggedIn, isFormFilled, async (req, res, next) => {
   try {
     const { username, password } = req.body;
     const salt = bcrypt.genSaltSync(saltRounds);
@@ -39,7 +39,7 @@ router.get('/login', isLoggedIn, (req, res, next) => {
   res.render('login');
 });
 
-router.post('/login', isLoggedIn, isFormFiled, async (req, res, next) => {
+router.post('/login', isLoggedIn, isFormFilled, async (req, res, next) => {
   const { username, password } = req.body;
   try {
     const user = await User.findOne({ username });
