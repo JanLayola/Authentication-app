@@ -10,7 +10,11 @@ const router = express.Router();
 const saltRounds = 10;
 
 router.get('/signup', isLoggedIn, (req, res, next) => {
-  res.render('signup');
+  const data = {
+    messages: req.flash('errorFormNotFilled'),
+    formData: req.flash('errorDataForm')
+  };
+  res.render('signup', data);
 });
 
 router.post('/signup', isLoggedIn, isFormFilled, async (req, res, next) => {
