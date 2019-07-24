@@ -12,7 +12,7 @@ router.get('/private', isNotLoggedIn, async (req, res, next) => {
   const user = await User.findById(userId).populate('recipes');
   console.log(user);
 
-  res.render('private');
+  res.render('private', user);
 });
 
 module.exports = router;
